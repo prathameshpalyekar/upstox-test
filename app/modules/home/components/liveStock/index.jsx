@@ -21,7 +21,7 @@ class Stock extends Component {
         const data = this.props.data.sort((a, b) => {
             return moment.utc(a.date).diff(moment.utc(b.date))
         }).filter((value) => {
-            const dateString = moment(value.date).format('DD-MM-YY HH:mm');
+            const dateString = moment(value.date).format('DD-MM-YY HH:mm:ss');
             const isPresent = presentData.find((datum) => datum === dateString);
             if (!isPresent) {
                 presentData.push(dateString)
@@ -40,7 +40,7 @@ class Stock extends Component {
 
         return (
             <div className="-stock" ref="stockContainer">
-                <CandleStickChart data={data} width={width} interval="minute"/>
+                <CandleStickChart data={data} width={width} interval="second" latest={30}/>
             </div>
         );
     }

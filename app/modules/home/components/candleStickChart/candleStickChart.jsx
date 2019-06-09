@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { scaleTime } from "d3-scale";
-import { utcDay, utcMinute, utcHour } from "d3-time";
+import { utcDay, utcMinute, utcHour, utcSecond } from "d3-time";
 
 import { ChartCanvas, Chart, ZoomButtons } from 'react-stockcharts';
 import { CandlestickSeries } from 'react-stockcharts/lib/series';
@@ -25,6 +25,7 @@ const candleWidth = {
     hour: utcHour,
     minute: utcMinute,
     day: utcDay,
+    second: utcSecond,
 };
 
 class CandleStickChart extends Component {
@@ -41,14 +42,24 @@ class CandleStickChart extends Component {
     }
 
     render() {
-        const { width, data, interval } = this.props;
+        const { width, interval, latest } = this.props;
+        const data = latest ? this.props.data.slice(-latest) : this.props.data;
+
         const xExtents = [
             xAccessor(last(data)),
             xAccessor(data[0])
         ];
 
+        if (!data || data.length === 0) {
+            return (
+                <div className="-candle-stick-chart">
+                    Loading data ...
+                </div>
+            );
+        }
+
         return (
-            <div className="-candle-stick-chart" ref="stockContainer">
+            <div className="-candle-stick-chart">
                 <ChartCanvas
                     width={width || 600}
                     height={500}
@@ -67,7 +78,7 @@ class CandleStickChart extends Component {
                         <YAxis axisAt="left" orient="left" ticks={5} zoomEnabled={true}/>
                         <CandlestickSeries width={timeIntervalBarWidth(candleWidth[interval])} />
                         <OHLCTooltip origin={[-40, -25]} className="-ohlc-tooltip"/>
-                        <ZoomButtons onReset={this.handleReset} />
+                        <ZoomButtons onReset={this.handleReset.bind(this)} />
                     </Chart>
                 </ChartCanvas>
             </div>
