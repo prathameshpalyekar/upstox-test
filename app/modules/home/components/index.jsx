@@ -13,7 +13,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentChart: CHARTS.HISTORICAL
+            currentChart: CHARTS.LIVE
         };
     }
 
@@ -24,7 +24,7 @@ class Home extends React.Component {
     }
 
     render() {
-        const { data } = this.props;
+        const { data, liveData } = this.props;
         const { HISTORICAL, LIVE } = CHARTS;
         const { currentChart } = this.state;
         const isHistorical = currentChart === HISTORICAL;
@@ -37,6 +37,7 @@ class Home extends React.Component {
         const livClass = cx('-section', {
             active: !isHistorical,
         });
+
         return (
             <div className="home-dashboard">
                 <div className="-section-container">
@@ -50,15 +51,12 @@ class Home extends React.Component {
                 <div className="-stock-table" ref="stockTable">
                     {isHistorical ?
                         <Stock data={data} stockTable={stockTable}/> :
-                        <div>LIVE</div>
+                        <LiveStock data={liveData} stockTable={stockTable}/>
                     }
                 </div>
             </div>
         );
     }
 }
-
-{/*<Stock data={data} stockTable={stockTable}/> :
-<LiveStock data={data} stockTable={stockTable} />*/}
 
 export default Home;

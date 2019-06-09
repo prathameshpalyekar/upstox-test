@@ -14,10 +14,10 @@ class Home extends Component {
     }
 
     render() {
-        const { Layout, data } = this.props;
+        const { Layout, data, liveData } = this.props;
         return (
             <div>
-                <Layout data={data} />
+                <Layout data={data} liveData={liveData}/>
             </div>
         );
     };
@@ -25,6 +25,7 @@ class Home extends Component {
 
 const mapStateToProps = state => ({
     data: state.stocks.data || [],
+    liveData: state.stocks.liveData || [],
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -19,7 +19,7 @@ class Stock extends Component {
 
         return (
             <div className="-stock" ref="stockContainer">
-                <CandleStickChart data={data} width={width} />
+                <CandleStickChart data={data} width={width} interval="day" />
             </div>
         );
     }

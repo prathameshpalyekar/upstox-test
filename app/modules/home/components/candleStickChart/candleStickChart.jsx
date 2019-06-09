@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { scaleTime } from "d3-scale";
-import { utcDay } from "d3-time";
+import { utcDay, utcMinute, utcHour } from "d3-time";
 
 import { ChartCanvas, Chart } from 'react-stockcharts';
 import { CandlestickSeries } from 'react-stockcharts/lib/series';
@@ -21,9 +21,15 @@ const margin = {
     bottom: 30
 };
 
+const candleWidth = {
+    hour: utcHour,
+    minute: utcMinute,
+    day: utcDay,
+};
+
 class CandleStickChart extends Component {
     render() {
-        const { width, data } = this.props;
+        const { width, data, interval } = this.props;
         const xExtents = [
             xAccessor(last(data)),
             xAccessor(data[0])
@@ -47,7 +53,7 @@ class CandleStickChart extends Component {
                     <Chart id={1} yExtents={d => [d.high, d.low]}>
                         <XAxis axisAt="bottom" orient="bottom" ticks={6}/>
                         <YAxis axisAt="left" orient="left" ticks={5} />
-                        <CandlestickSeries width={timeIntervalBarWidth(utcDay)} />
+                        <CandlestickSeries width={timeIntervalBarWidth(candleWidth[interval])} />
                         <OHLCTooltip origin={[-40, -25]} className="-ohlc-tooltip"/>
                     </Chart>
                 </ChartCanvas>

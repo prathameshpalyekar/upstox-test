@@ -1,6 +1,6 @@
 import clientSocket from 'socket.io-client';
 import Config from 'web/config';
-const url = `${Config.BASE_URL}/watch`;
+const url = `${Config.BASE_URL}watch`;
 const socket = clientSocket(url);
 
 socket.on('connect', () => {
